@@ -1,12 +1,12 @@
 ---
 name: vue-project-scaffolder
 description: >
-  Guide and validate a production-ready Vue 3 project setup with Vite, Tailwind CSS v4, and shadcn/vue.
-  Trigger: When user says "vue project", "create vue project", "new vue project", "scaffold vue", "setup vue", or provides a project name.
+  Automatically scaffold and validate a production-ready Vue 3 project with Vite, Tailwind CSS v4, and shadcn/vue integration.
 license: Apache-2.0
 metadata:
-  author: gentleman-programming
-  version: "1.0"
+  author: EfeDeveloper
+  version: "2.0"
+  compliance: "Agent Skills v2"
 ---
 
 # Vue Project Scaffolder
@@ -31,9 +31,9 @@ This skill **automatically creates and configures** a production-ready Vue 3 pro
 2. **Installs dependencies** — Adds Tailwind v4, utilities, and all required packages
 3. **Configures files** — Updates vite.config.ts, tsconfig.json, style.css, App.vue, etc.
 4. **Validates dependencies** — Checks package.json has all minimum required packages
-5. **Does NOT run dev server** — Project is created and configured, not executed
+5. **Does NOT run dev server or init shadcn** — Project is fully configured, user decides next steps
 
-**Result**: A fully set up, ready-to-develop Vue 3 project. User runs `{pm} run dev` themselves when ready.
+**Result**: A fully set up, ready-to-develop Vue 3 + Tailwind v4 project. User can immediately run `{pm} run dev` or optionally add shadcn components.
 
 ## Critical Patterns
 
@@ -106,10 +106,10 @@ export default defineConfig({
    - If user doesn't specify: Check what's available on their system, suggest pnpm as default
    - DO NOT skip this question
 
-3. **shadcn base color** (optional)
-   - "What color theme for shadcn components? (Default: Neutral)"
-   - Other options: Slate, Rose, Zinc, Stone, Violet
-   - If user doesn't specify: Use "Neutral" (most flexible)
+3. **shadcn** (optional, for later)
+   - Ask: "Do you want to add shadcn/vue components? (Optional, can add later)"
+   - If yes: Document the init command for them to run after project setup
+   - If no: Skip — user can add components anytime with `{pm} dlx shadcn-vue@latest init`
 
 ## Implementation Summary
 
@@ -131,8 +131,10 @@ Adapt ALL commands to the chosen package manager. Use the **Package Manager Equi
    - Copy [`assets/style.css`](assets/style.css) → `src/style.css`
    - Copy [`assets/App.vue`](assets/App.vue) → `src/App.vue`
 7. **VALIDATE:** Check `package.json` has all minimum required dependencies (see Critical Patterns)
-8. **DO NOT EXECUTE:** Do not run `npm run dev` — user will do this themselves
-9. **Report:** Show user where project is and how to run it
+8. **DO NOT EXECUTE:** 
+   - Do NOT run `{pm} run dev` — user will do this themselves
+   - Do NOT run `shadcn-vue init` — if user wants it, they'll add components later
+9. **Report:** Show user where project is and how to run it (and optional shadcn next step)
 
 **For detailed explanations**, see [`references/implementation-guide.md`](references/implementation-guide.md)
 
@@ -340,17 +342,17 @@ Package Manager: {pm}
 3. Start development server: {pm} run dev
 4. Open http://localhost:5173 in your browser
 
-📚 Ready to add more?
-- Components: {pm} dlx shadcn-vue@latest init
-- State: {pm} add pinia
-- Routing: {pm} add vue-router
-```
+📚 Optional Next Steps:
+- **Add shadcn components:** `{pm} dlx shadcn-vue@latest init` (then add individual components)
+- **Add state management:** `{pm} add pinia`
+- **Add routing:** `{pm} add vue-router`
 
 **IMPORTANT:**
 - ✅ All minimum dependencies are validated and installed
-- ✅ Project is ready to develop
+- ✅ Project is ready to develop immediately
+- ✅ Tailwind v4 is already configured (NO extra config needed)
 - ❌ Do NOT run `{pm} run dev` — user will do this themselves
-- ℹ️ Point user to the README.md in the project for next steps
+- ℹ️ Point user to the README.md in the project for detailed next steps
 
 ---
 
