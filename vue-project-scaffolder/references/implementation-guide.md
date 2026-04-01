@@ -1,4 +1,4 @@
-# Vue + Vite + Tailwind v4 + shadcn/vue — Complete Implementation Guide
+# Vue + Vite + Tailwind v4 — Complete Implementation Guide
 
 This guide provides detailed step-by-step instructions for scaffolding a Vue 3 project with all the components correctly configured.
 
@@ -7,7 +7,7 @@ This guide provides detailed step-by-step instructions for scaffolding a Vue 3 p
 **Ask the user:**
 1. "Which package manager do you want to use: **pnpm**, **npm**, **yarn**, or **bun**?"
 2. "What should your project be called?"
-3. "Preferred color theme for shadcn? (default: Neutral)"
+3. "Preferred color theme for shadcn? (default: Neutral)" — *optional, for later*
 
 Then replace `{pm}` in all commands with their choice:
 - **pnpm**: Use `pnpm`, `pnpm add`, `pnpm dlx`, `pnpm run dev`
@@ -19,6 +19,8 @@ Then replace `{pm}` in all commands with their choice:
 
 - Node.js >= 20.19.0 or >= 22.12.0
 - One of: pnpm, npm, yarn, or bun (user's choice)
+
+---
 
 ## Step-by-Step Installation
 
@@ -63,69 +65,67 @@ cd {project-name}
 - `src/App.vue` — Root component (needs update)
 - `tsconfig.json` — TypeScript config (needs update)
 - `tsconfig.app.json` — App TypeScript config (needs update)
+- `tsconfig.node.json` — Node TypeScript config (keep as is)
 - `src/style.css` — Global styles (needs update)
 - `package.json` — Dependencies (will add more)
 
-### Step 2: Install Tailwind CSS v4
+---
 
-Install Tailwind and the Vite plugin using the user's chosen package manager:
+### Step 2: Install Dependencies
+
+Install Tailwind v4, utilities, and supporting libraries:
 
 **pnpm:**
 ```bash
-pnpm add tailwindcss @tailwindcss/vite
-pnpm add -D @types/node
+pnpm add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
+pnpm add -D @types/node tw-animate-css
 ```
 
 **npm:**
 ```bash
-npm install tailwindcss @tailwindcss/vite
-npm install -D @types/node
+npm install tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
+npm install -D @types/node tw-animate-css
 ```
 
 **yarn:**
 ```bash
-yarn add tailwindcss @tailwindcss/vite
-yarn add -D @types/node
+yarn add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
+yarn add -D @types/node tw-animate-css
 ```
 
 **bun:**
 ```bash
-bun add tailwindcss @tailwindcss/vite
-bun add -D @types/node
+bun add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
+bun add -D @types/node tw-animate-css
 ```
 
-**Why `@tailwindcss/vite`?**
-- Tailwind v4 uses a **plugin-based** approach
-- No `tailwind.config.js` needed
-- No `postcss.config.js` needed
-- Everything is configured via the Vite plugin
+**Why these packages?**
+- `tailwindcss` — Core Tailwind CSS v4
+- `@tailwindcss/vite` — Vite plugin (v4 plugin-based approach)
+- `clsx` — Conditional class names (utility for components)
+- `class-variance-authority` — Variant management (used by shadcn)
+- `tailwind-merge` — Merge Tailwind classes intelligently
+- `lucide-vue-next` — Icon library (integrates with shadcn)
+- `@types/node` — TypeScript types for Node APIs
+- `tw-animate-css` — Advanced animations for Tailwind
 
-### Step 3: Update src/style.css
+---
 
-Replace the entire content of `src/style.css` with:
+### Step 3: Update vite.config.ts
 
-```css
-@import "tailwindcss";
-```
-
-That's it. No PostCSS config, no theme config. The Vite plugin handles everything.
-
-### Step 4: Configure vite.config.ts
-
-Update `vite.config.ts` to include both Vue and Tailwind plugins:
+Replace the entire `vite.config.ts` with:
 
 ```typescript
-import { fileURLToPath, URL } from 'node:url'
-
+import path from 'node:path'
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
+import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue(), tailwindcss()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@': path.resolve(__dirname, './src'),
     },
   },
 })
@@ -133,21 +133,158 @@ export default defineConfig({
 
 **Key points:**
 - `vue()` plugin processes Vue files
-- `tailwindcss()` plugin processes Tailwind imports
-- `alias` sets up `@` as a shortcut to `./src`
-- Use `fileURLToPath` + `import.meta.url` (more reliable than `__dirname`)
+- `tailwindcss()` plugin processes Tailwind imports (v4 plugin-based)
+- `alias: '@'` allows imports like `import Foo from '@/components/Foo.vue'`
+- `path.resolve(__dirname)` — More reliable than `fileURLToPath` for CommonJS-style syntax
+
+---
+
+### Step 4: Update src/style.css
+
+Replace the entire content of `src/style.css` with:
+
+```css
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+```
+
+**What's happening:**
+- `@import "tailwindcss"` — Core Tailwind CSS v4
+- `@import "tw-animate-css"` — Advanced animations
+- `@custom-variant dark` — Dark mode support
+- `@theme inline` — Define CSS variable mappings
+- `:root` — Light mode colors in oklch format
+- `.dark` — Dark mode overrides
+- `@layer base` — Global element styles
+
+---
 
 ### Step 5: Configure TypeScript Paths (tsconfig.json)
 
-Update `tsconfig.json` to add path mapping for the `@/*` alias:
+Update `tsconfig.json` to add path mapping:
 
 ```json
 {
   "files": [],
-  "references": [
-    { "path": "./tsconfig.node.json" },
-    { "path": "./tsconfig.app.json" }
-  ],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -157,35 +294,107 @@ Update `tsconfig.json` to add path mapping for the `@/*` alias:
 }
 ```
 
-This enables:
-- TypeScript to resolve `@/components/ui/button` correctly
-- IDE autocomplete and type checking through the alias
+**Why?**
+- `baseUrl: "."` — Resolve paths from project root
+- `paths` — Enable `@/` alias for imports
+
+---
 
 ### Step 6: Configure TypeScript Paths (tsconfig.app.json)
 
-Update `tsconfig.app.json` to include the same path mapping:
+Update `tsconfig.app.json` to match:
 
 ```json
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
-  "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "types": ["vite/client"],
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+}
+```
+
+**Key additions:**
+- `tsBuildInfoFile` — Incremental builds cache
+- `types: ["vite/client"]` — Vite type definitions
+- Strict linting rules enabled
+- Same path mapping as root tsconfig
+
+---
+
+### Step 7: Update src/App.vue
+
+Replace `src/App.vue` with:
+
+```vue
+<script setup lang="ts">
+
+</script>
+
+<template>
+  <main class="relative place-items-center grid bg-slate-950 px-6 min-h-screen overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.24),transparent_35%),radial-gradient(circle_at_bottom,rgba(249,115,22,0.18),transparent_30%)]" />
+    <div class="top-1/2 left-1/2 absolute bg-cyan-400/10 blur-3xl rounded-full w-72 h-72 -translate-x-1/2 -translate-y-1/2" />
+
+    <section class="relative flex flex-col items-center max-w-5xl text-center">
+      <span class="bg-white/5 backdrop-blur-sm mb-5 px-4 py-1.5 border border-white/10 rounded-full font-semibold text-slate-300 text-xs uppercase tracking-[0.35em]">
+        Vue + Tailwind v4
+      </span>
+
+      <h1 class="font-black text-white lg:text-[7rem] text-5xl sm:text-7xl md:text-8xl uppercase leading-none tracking-[0.16em]">
+        <span class="block">Vue Project</span>
+        <span class="block bg-clip-text bg-linear-to-r from-cyan-300 via-white to-amber-300 mt-2 text-transparent">
+          Scaffolder
+        </span>
+      </h1>
+
+      <div class="bg-linear-to-r from-transparent via-cyan-300 to-transparent opacity-80 mt-8 w-28 h-px" />
+    </section>
+  </main>
+</template>
+```
+
+**Features:**
+- Responsive design with Tailwind utilities
+- Gradient backgrounds with radial gradients
+- Modern typography with custom tracking
+- Works on all screen sizes (mobile to desktop)
+
+---
+
+### Step 8: Update package.json (Optional)
+
+Update the scripts section for a better development experience:
+
+```json
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "type-check": "vue-tsc --build"
   }
 }
 ```
 
-Both files need the paths because they serve different purposes:
-- `tsconfig.json` — Root config that references others
-- `tsconfig.app.json` — App-specific config with the actual rules
+---
 
-### Step 7: Initialize shadcn/vue (Interactive)
+### Step 9: (Optional) Initialize shadcn/vue
 
-Run the shadcn initialization using the user's chosen package manager:
+If you want to add high-quality pre-built components:
 
 **pnpm:**
 ```bash
@@ -207,105 +416,36 @@ yarn dlx shadcn-vue@latest init
 bun x shadcn-vue@latest init
 ```
 
-Follow the prompts in the console:
-
-| Prompt | Recommended Response |
-|--------|----------------------|
-| Style | Press Enter (default: "new-york") |
-| TypeScript | Press Enter (default: yes) |
-| Base Color | Press Enter (default: "neutral") or choose another |
-| CSS Variables | Press Enter (default: yes) |
-| Other prompts | Press Enter to accept defaults |
-
-**What gets created:**
-- `components.json` — shadcn configuration
-- `src/components/ui/` — Directory for UI components
-- `src/lib/utils.ts` — Utility functions for components
-
-### Step 8: Add Essential Components
-
-Install the most commonly used shadcn components using the user's chosen package manager:
-
-**pnpm:**
-```bash
-pnpm dlx shadcn-vue@latest add button card badge
-```
-
-**npm:**
-```bash
-npx shadcn-vue@latest add button card badge
-```
-
-**yarn:**
-```bash
-yarn dlx shadcn-vue@latest add button card badge
-```
-
-**bun:**
-```bash
-bun x shadcn-vue@latest add button card badge
-```
+When prompted:
+- Accept default style: **new-york**
+- Select base color: **neutral** (or your preference)
+- Accept all other defaults by pressing Enter
 
 This creates:
-- `src/components/ui/button/` — Button component
-- `src/components/ui/card/` — Card component
-- `src/components/ui/badge/` — Badge component
+- `components.json` — shadcn configuration
+- `src/components/ui/` — Directory for UI components
 
-Each can be imported like:
-```typescript
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+#### Adding Components
+```bash
+{pm} dlx shadcn-vue@latest add button card input
 ```
 
-### Step 9: Update App.vue
-
-Replace `src/App.vue` with a working example:
-
+Then use in your Vue components:
 ```vue
-<script setup lang="ts">
+<script setup>
 import { Button } from '@/components/ui/button'
 </script>
 
 <template>
-  <div class="min-h-screen bg-background">
-    <main class="container mx-auto py-8 px-4">
-      <h1 class="text-4xl font-bold mb-4">Welcome to Vue 3 + Vite</h1>
-      <p class="text-muted-foreground mb-6">
-        Vue 3 + Vite + Tailwind CSS v4 + shadcn/vue
-      </p>
-      <Button>Get Started</Button>
-    </main>
-  </div>
+  <Button>Click Me</Button>
 </template>
 ```
 
-**What's happening:**
-- `<div class="min-h-screen bg-background">` — Full-height container with Tailwind classes
-- `<h1 class="text-4xl font-bold mb-4">` — Tailwind typography
-- `<Button>` — shadcn component with theme integration
-- `text-muted-foreground` — Tailwind color from shadcn's CSS variables
+---
 
-### Step 10: Create Folder Structure (Optional)
+### Step 10: Start Development Server
 
-For better organization, create these folders:
-
-```bash
-mkdir -p src/{composables,stores,types,lib,__tests__}
-```
-
-**Folder purposes:**
-- `components/ui/` — shadcn components (auto-created)
-- `components/sections/` — Your custom components
-- `composables/` — Vue composables (reusable logic)
-- `stores/` — Pinia stores (if using state management)
-- `types/` — TypeScript type definitions
-- `lib/` — Utility functions
-- `__tests__/` — Unit tests
-
-### Step 11: Start Development Server
-
-Run the dev server using the user's chosen package manager:
+Run the development server:
 
 **pnpm:**
 ```bash
@@ -329,92 +469,104 @@ bun run dev
 
 You should see:
 ```
-  VITE v{version}  ready in {ms} ms
+  VITE v8.x.x  ready in xxx ms
 
   ➜  Local:   http://localhost:5173/
   ➜  press h + enter to show help
 ```
 
-Open `http://localhost:5173/` in your browser.
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 **You should see:**
-- ✅ "Welcome to Vue 3 + Vite" heading in Tailwind styles
-- ✅ A styled Button component
+- ✅ Beautiful gradient background
+- ✅ "Vue Project Scaffolder" heading with gradient text
+- ✅ Responsive design (try resizing)
 - ✅ No console errors
-- ✅ HMR (Hot Module Replacement) working — edit App.vue and see changes instantly
+- ✅ HMR working (edit App.vue, see changes instantly)
+
+---
 
 ## Verification Checklist
 
 After all steps, verify:
 
-**Files exist:**
-- ✅ `vite.config.ts` with `@tailwindcss/vite` plugin
-- ✅ `src/style.css` with only `@import "tailwindcss";`
-- ✅ `tsconfig.json` and `tsconfig.app.json` with path aliases
-- ✅ `components.json` from shadcn init
-- ✅ `src/components/ui/` folder with Button, Card, Badge
-
-**No unwanted files:**
-- ✅ NO `tailwind.config.js` (that's Tailwind v3)
-- ✅ NO `postcss.config.js` (Vite plugin handles it)
-- ✅ NO old CSS reset files
+**Files exist and correct:**
+- ✅ `vite.config.ts` has `vue()` and `tailwindcss()` plugins
+- ✅ `vite.config.ts` uses `path.resolve(__dirname, './src')` for alias
+- ✅ `src/style.css` imports `@tailwindcss` and `@import "tw-animate-css"`
+- ✅ `tsconfig.json` and `tsconfig.app.json` have path aliases (`@/*`)
+- ✅ `src/App.vue` has responsive gradient design
 
 **Dependencies installed:**
-- ✅ `tailwindcss@4.x.x`
-- ✅ `@tailwindcss/vite@4.x.x`
-- ✅ `vue@3.x.x`
-- ✅ `shadcn-vue` (in components.json)
+- ✅ `tailwindcss@4.2.2`
+- ✅ `@tailwindcss/vite@4.2.2`
+- ✅ `clsx`, `class-variance-authority`, `tailwind-merge`, `lucide-vue-next`
+- ✅ `tw-animate-css`
+- ✅ `@types/node`
 
 **Runtime working:**
-- ✅ `pnpm run dev` starts without errors
-- ✅ App renders with Tailwind styles
-- ✅ Button component is visible and styled
+- ✅ `{pm} run dev` starts without errors
+- ✅ App renders with gradient and styling
+- ✅ Responsive on mobile, tablet, desktop
+- ✅ No console errors or TypeScript issues
 - ✅ HMR works (edit, save, see changes instantly)
-- ✅ TypeScript paths work (no "@/components" resolution errors)
+
+**Critical (should NOT exist):**
+- ✅ **NO** `tailwind.config.js` (v4 is plugin-based)
+- ✅ **NO** `postcss.config.js` (Vite plugin handles it)
+
+---
 
 ## Troubleshooting
 
 | Problem | Cause | Solution |
 |---------|-------|----------|
-| "Module not found: @/components/ui/button" | TypeScript paths not configured | Check both `tsconfig.json` and `tsconfig.app.json` have `paths` |
-| Tailwind styles not applied | Missing or wrong `@import "tailwindcss"` | Verify `src/style.css` has ONLY that line |
-| `tailwind.config.js` created | Vite config missing `@tailwindcss/vite` | Delete the file, use plugin in vite.config.ts instead |
-| HMR not working | Plugin order wrong | Ensure `vue()` and `tailwindcss()` are in the right order in plugins array |
-| shadcn components not found | `shadcn-vue init` not run | Run `pnpm dlx shadcn-vue@latest init` |
-| "Cannot find module @vitejs/plugin-vue" | Missing dependency | Run `pnpm add -D @vitejs/plugin-vue` |
+| Tailwind styles not applied | Missing `@import "tailwindcss"` | Verify `src/style.css` has both imports |
+| `@/*` alias not working | tsconfig paths missing | Check BOTH `tsconfig.json` and `tsconfig.app.json` |
+| HMR not working | Missing plugins in vite.config | Verify `vue()` and `tailwindcss()` plugins are present |
+| Dark mode not working | Class not applied to html | Add `dark` class to `<html>` element |
+| `tw-animate-css` not working | Import missing from style.css | Verify `@import "tw-animate-css"` is in `src/style.css` |
+| Module not found errors | Dependencies not installed | Run `{pm} install` again |
+
+---
 
 ## Next Steps
 
-After setup:
-
-### Add More Components
+### Add State Management
 ```bash
-pnpm dlx shadcn-vue@latest add input form dialog
+{pm} add pinia
 ```
 
-### Add State Management (Pinia)
+### Add Routing
 ```bash
-pnpm add pinia
-```
-
-### Add Routing (Vue Router)
-```bash
-pnpm add vue-router
+{pm} add vue-router
 ```
 
 ### Add Testing
 ```bash
-pnpm add -D vitest @vue/test-utils
+{pm} add -D vitest @vue/test-utils jsdom
 ```
 
-### Add Linting
+### Add ESLint & Prettier
 ```bash
-pnpm add -D eslint @vue/eslint-config-typescript
+{pm} add -D eslint prettier eslint-plugin-vue
 ```
 
-## References
+### Deploy to Vercel
+```bash
+# vercel.json
+{
+  "buildCommand": "{pm} run build",
+  "outputDirectory": "dist"
+}
+```
 
-- [shadcn/vue Installation Guide](https://www.shadcn-vue.com/docs/installation/vite)
-- [Tailwind CSS v4 Vite Setup](https://tailwindcss.com/docs/installation/using-vite)
-- [Vite Documentation](https://vite.dev)
-- [Vue 3 Guide](https://vuejs.org)
+---
+
+## Resources
+
+- [Vue 3 Documentation](https://vuejs.org)
+- [Vite Guide](https://vite.dev)
+- [Tailwind CSS v4](https://tailwindcss.com/docs/installation/using-vite)
+- [shadcn/vue](https://www.shadcn-vue.com)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
