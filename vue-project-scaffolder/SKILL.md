@@ -62,6 +62,7 @@ This skill **automatically creates and configures** a production-ready Vue 3 pro
 - @vue/tsconfig >= 0.9.0
 - @types/node >= 24.12.0
 - tw-animate-css >= 1.4.0
+- vite-plugin-vue-devtools >= 8.0.7
 - vue-tsc >= 3.2.5
 
 ### Technical
@@ -162,6 +163,7 @@ Adapt ALL commands to the chosen package manager. Use the **Package Manager Equi
 - ✅ @vue/tsconfig >= 0.9.0
 - ✅ @types/node >= 24.12.0
 - ✅ tw-animate-css >= 1.4.0
+- ✅ vite-plugin-vue-devtools >= 8.0.7
 - ✅ vue-tsc >= 3.2.5
 
 ### Critical (Should NOT exist)
@@ -215,7 +217,7 @@ If any step fails:
 | Add dependency | `pnpm add {pkg}` | `npm install {pkg}` | `yarn add {pkg}` | `bun add {pkg}` |
 | Add dev dependency | `pnpm add -D {pkg}` | `npm install --save-dev {pkg}` | `yarn add -D {pkg}` | `bun add -D {pkg}` |
 | Install Tailwind v4 | `pnpm add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next` | `npm install tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next` | `yarn add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next` | `bun add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next` |
-| Install @types/node & tw-animate | `pnpm add -D @types/node tw-animate-css` | `npm install -D @types/node tw-animate-css` | `yarn add -D @types/node tw-animate-css` | `bun add -D @types/node tw-animate-css` |
+| Install dev tools | `pnpm add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc` | `npm install -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc` | `yarn add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc` | `bun add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc` |
 | Init shadcn | `pnpm dlx shadcn-vue@latest init` | `npx shadcn-vue@latest init` | `yarn dlx shadcn-vue@latest init` | `bun x shadcn-vue@latest init` |
 | Add shadcn component | `pnpm dlx shadcn-vue@latest add button` | `npx shadcn-vue@latest add button` | `yarn dlx shadcn-vue@latest add button` | `bun x shadcn-vue@latest add button` |
 | Run dev server | `pnpm run dev` | `npm run dev` | `yarn dev` | `bun run dev` |
@@ -233,7 +235,7 @@ cd {project-name}
 ### 2. Install Dependencies
 ```bash
 {pm} add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
-{pm} add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vue-tsc
+{pm} add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc
 ```
 
 ### 3. Update Configuration Files (Copy from assets)
@@ -268,7 +270,7 @@ cd {project-name}
 pnpm create vite@latest my-app --template vue-ts
 cd my-app
 pnpm add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
-pnpm add -D @types/node tw-animate-css
+pnpm add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc
 # Copy config files from assets
 pnpm run dev
 ```
@@ -278,7 +280,7 @@ pnpm run dev
 npm create vite@latest my-app -- --template vue-ts
 cd my-app
 npm install tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
-npm install -D @types/node tw-animate-css
+npm install -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc
 # Copy config files from assets
 npm run dev
 ```
@@ -288,7 +290,7 @@ npm run dev
 yarn create vite my-app --template vue-ts
 cd my-app
 yarn add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
-yarn add -D @types/node tw-animate-css
+yarn add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc
 # Copy config files from assets
 yarn dev
 ```
@@ -298,7 +300,7 @@ yarn dev
 bun create vite my-app --template vue-ts
 cd my-app
 bun add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
-bun add -D @types/node tw-animate-css
+bun add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc
 # Copy config files from assets
 bun run dev
 ```

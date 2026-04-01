@@ -78,25 +78,25 @@ Install Tailwind v4, utilities, and supporting libraries:
 **pnpm:**
 ```bash
 pnpm add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
-pnpm add -D @types/node tw-animate-css
+pnpm add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc
 ```
 
 **npm:**
 ```bash
 npm install tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
-npm install -D @types/node tw-animate-css
+npm install -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc
 ```
 
 **yarn:**
 ```bash
 yarn add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
-yarn add -D @types/node tw-animate-css
+yarn add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc
 ```
 
 **bun:**
 ```bash
 bun add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
-bun add -D @types/node tw-animate-css
+bun add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc
 ```
 
 **Why these packages?**
@@ -108,6 +108,12 @@ bun add -D @types/node tw-animate-css
 - `lucide-vue-next` — Icon library (integrates with shadcn)
 - `@types/node` — TypeScript types for Node APIs
 - `tw-animate-css` — Advanced animations for Tailwind
+- `typescript` — Type-safe development
+- `vite` — Build tool and dev server
+- `@vitejs/plugin-vue` — Vue support for Vite
+- `@vue/tsconfig` — Vue TypeScript configuration
+- `vite-plugin-vue-devtools` — Vue DevTools integration (browser extension)
+- `vue-tsc` — TypeScript type checking for Vue
 
 ---
 
