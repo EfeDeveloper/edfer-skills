@@ -4,17 +4,36 @@ A collection of AI agent skills for modern frontend development. Skills follow t
 
 ## Installation
 
-Install the full collection:
-
+### Install All Skills
 ```bash
 npx skills add EfeDeveloper/edfer-skills
 ```
 
-Or install a specific skill:
+### Install Specific Skills
 
+#### Vue Project Scaffolder
+```bash
+npx skills add https://github.com/EfeDeveloper/edfer-skills --skill vue-project-scaffolder
+```
+
+Or using npm syntax:
 ```bash
 npx skills add EfeDeveloper/edfer-skills/vue-project-scaffolder
 ```
+
+## Quick Start
+
+Once installed, use with Claude Code, Cursor, or Windsurf:
+
+```bash
+# Create a new Vue 3 project
+npx skills invoke vue-project-scaffolder
+```
+
+Or just describe what you want in your AI agent:
+- "vue project my-app"
+- "create vue project"
+- "new vue project called dashboard"
 
 ## Available Skills
 

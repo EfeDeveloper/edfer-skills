@@ -4,21 +4,51 @@ This file catalogs all available AI agent skills in this repository. Use these s
 
 ## Skills Registry
 
-| Skill Name | Description | Author | Version | Link |
-|------------|-------------|--------|---------|------|
-| `vue-project-scaffolder` | Scaffold production-ready Vue 3 projects with Vite, Tailwind CSS v4, and shadcn/vue. Automatically configures everything with zero manual setup. | gentleman-programming | 1.0 | [SKILL.md](vue-project-scaffolder/SKILL.md) |
+| Skill Name | Description | Version | Installation |
+|------------|-------------|---------|---------------|
+| **vue-project-scaffolder** | Scaffold production-ready Vue 3 projects with Vite, Tailwind CSS v4, and shadcn/vue. Automatically configures everything, validates dependencies. | 1.0 | `npx skills add https://github.com/EfeDeveloper/edfer-skills --skill vue-project-scaffolder` |
 
-## How to Use Skills
+[View SKILL.md](vue-project-scaffolder/SKILL.md)
 
-### With Claude Code
+## Installation
+
+### Install a Specific Skill
+
+#### Vue Project Scaffolder
 ```bash
-# Load this skill in Claude Code
-/skill-creator
-/vue-project-scaffolder
+npx skills add https://github.com/EfeDeveloper/edfer-skills --skill vue-project-scaffolder
 ```
 
-### With Cursor / Windsurf
-Skills are automatically discovered when available in the project structure.
+### Install All Skills
+```bash
+npx skills add EfeDeveloper/edfer-skills
+```
+
+## How to Use
+
+### Trigger the Skill
+Once installed, use with your AI agent:
+
+**In Claude Code, Cursor, Windsurf:**
+```bash
+# Just describe what you want:
+"create vue project my-app"
+"new vue project"
+"scaffold vue project dashboard"
+```
+
+The skill will automatically:
+1. Create Vite project with Vue 3 + TypeScript
+2. Install Tailwind CSS v4 and all dependencies
+3. Configure all files (vite.config.ts, tsconfig.json, style.css, App.vue)
+4. Validate minimum dependencies
+5. Report when project is ready
+
+**Then you run:**
+```bash
+cd my-app
+npm run dev  # or pnpm, yarn, bun
+```
 
 ## Contributing
 
