@@ -128,6 +128,7 @@ Adapt ALL commands to the chosen package manager. Use the **Package Manager Equi
    - Copy [`assets/vite.config.ts`](assets/vite.config.ts) → `vite.config.ts`
    - Copy [`assets/tsconfig.json`](assets/tsconfig.json) → `tsconfig.json`
    - Copy [`assets/tsconfig.app.json`](assets/tsconfig.app.json) → `tsconfig.app.json`
+   - Copy [`assets/tsconfig.node.json`](assets/tsconfig.node.json) → `tsconfig.node.json` (CRITICAL for vite.config.ts types)
    - Copy [`assets/style.css`](assets/style.css) → `src/style.css`
    - Copy [`assets/App.vue`](assets/App.vue) → `src/App.vue`
    - Copy [`assets/README.md`](assets/README.md) → `README.md` (replace Vite's default)
@@ -145,7 +146,8 @@ Adapt ALL commands to the chosen package manager. Use the **Package Manager Equi
 
 ### File Structure
 - ✅ `vite.config.ts` exists with `@tailwindcss/vite` plugin and `@/` alias
-- ✅ `tsconfig.json` and `tsconfig.app.json` have path alias (`baseUrl` + `paths`)
+- ✅ `tsconfig.json`, `tsconfig.app.json`, and `tsconfig.node.json` all exist with correct config
+- ✅ `tsconfig.node.json` has `moduleResolution: "bundler"` (fixes vite.config.ts type errors)
 - ✅ `src/style.css` exists with `@import "tailwindcss"` and `@import "tw-animate-css"`
 - ✅ `src/App.vue` exists with gradient content
 - ✅ `README.md` exists in project root with setup and next-steps documentation
@@ -248,6 +250,7 @@ cd {project-name}
 # assets/vite.config.ts        → {project-name}/vite.config.ts
 # assets/tsconfig.json         → {project-name}/tsconfig.json
 # assets/tsconfig.app.json     → {project-name}/tsconfig.app.json
+# assets/tsconfig.node.json    → {project-name}/tsconfig.node.json (CRITICAL - fixes vite.config.ts type errors)
 # assets/style.css             → {project-name}/src/style.css
 # assets/App.vue               → {project-name}/src/App.vue
 # assets/README.md             → {project-name}/README.md (replaces Vite default)
@@ -365,6 +368,7 @@ Package Manager: {pm}
 - **[assets/vite.config.ts](assets/vite.config.ts)** — Vite configuration with Tailwind v4 and Vue plugins
 - **[assets/tsconfig.json](assets/tsconfig.json)** — Root TypeScript config with path aliases
 - **[assets/tsconfig.app.json](assets/tsconfig.app.json)** — App TypeScript config with path aliases
+- **[assets/tsconfig.node.json](assets/tsconfig.node.json)** — Node TypeScript config for vite.config.ts (CRITICAL - fixes type resolution)
 - **[assets/style.css](assets/style.css)** — Minimal style.css with Tailwind import
 - **[assets/App.vue](assets/App.vue)** — Demo App.vue with working shadcn Button
 - **[assets/components.json](assets/components.json)** — shadcn configuration file
