@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+/* Optional: Add custom fonts, animations, or layer styles here */
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+}
