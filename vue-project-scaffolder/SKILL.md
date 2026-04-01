@@ -130,6 +130,7 @@ Adapt ALL commands to the chosen package manager. Use the **Package Manager Equi
    - Copy [`assets/tsconfig.app.json`](assets/tsconfig.app.json) → `tsconfig.app.json`
    - Copy [`assets/style.css`](assets/style.css) → `src/style.css`
    - Copy [`assets/App.vue`](assets/App.vue) → `src/App.vue`
+   - Copy [`assets/README.md`](assets/README.md) → `README.md` (replace Vite's default)
 7. **VALIDATE:** Check `package.json` has all minimum required dependencies (see Critical Patterns)
 8. **DO NOT EXECUTE:** 
    - Do NOT run `{pm} run dev` — user will do this themselves
@@ -144,9 +145,10 @@ Adapt ALL commands to the chosen package manager. Use the **Package Manager Equi
 
 ### File Structure
 - ✅ `vite.config.ts` exists with `@tailwindcss/vite` plugin and `@/` alias
+- ✅ `tsconfig.json` and `tsconfig.app.json` have path alias (`baseUrl` + `paths`)
 - ✅ `src/style.css` exists with `@import "tailwindcss"` and `@import "tw-animate-css"`
-- ✅ Both `tsconfig.json` and `tsconfig.app.json` have path alias (`baseUrl` + `paths`)
 - ✅ `src/App.vue` exists with gradient content
+- ✅ `README.md` exists in project root with setup and next-steps documentation
 
 ### Dependencies in package.json
 **Check these MUST be in dependencies:**
@@ -248,6 +250,7 @@ cd {project-name}
 # assets/tsconfig.app.json     → {project-name}/tsconfig.app.json
 # assets/style.css             → {project-name}/src/style.css
 # assets/App.vue               → {project-name}/src/App.vue
+# assets/README.md             → {project-name}/README.md (replaces Vite default)
 ```
 
 ### 4. Validate Dependencies
