@@ -1,6 +1,6 @@
 # edfer-skills
 
-A collection of AI agent skills for modern frontend development. Skills follow the [Agent Skills](https://agentskills.io/specification) format and work with Claude Code, Cursor, Windsurf, and other AI coding agents.
+A collection of AI agent skills for modern frontend development. Skills follow the [Agent Skills Official Specification](https://agentskills.io/specification) format and work with Claude Code, Cursor, Windsurf, and other AI coding agents.
 
 ## Installation
 
@@ -37,9 +37,9 @@ Or just describe what you want in your AI agent:
 
 ## Available Skills
 
-| Skill                                               | Description                                                               |
-| --------------------------------------------------- | ------------------------------------------------------------------------- |
-| [vue-project-scaffolder](./vue-project-scaffolder/) | Scaffold a Vue 3 + Vite + Tailwind v4 + shadcn/vue project in one command |
+| Skill                                               | Description                                                               | Status |
+| --------------------------------------------------- | ------------------------------------------------------------------------- | ------ |
+| [vue-project-scaffolder](./vue-project-scaffolder/) | Scaffold a Vue 3 + Vite + Tailwind v4 + shadcn/vue project in one command | ✅ Spec-Compliant |
 
 ## Usage
 
@@ -54,6 +54,15 @@ Once installed, skills are automatically available in your AI agent. Just descri
 The most common problem when AI sets up Vue + Tailwind: **it configures Tailwind v3 instead of v4**.
 
 Tailwind v4 uses `@tailwindcss/vite` as a Vite plugin — no `tailwind.config.js`, no PostCSS setup. These skills follow the official docs exactly and produce correctly configured projects every time.
+
+## Project Status
+
+**v2.1 - Official Specification Compliant**
+- ✅ Full compliance with [Agent Skills Official Specification](https://agentskills.io/specification)
+- ✅ Cross-platform support (macOS, Linux, Windows)
+- ✅ Zero external dependencies
+- ✅ Progressive disclosure optimized
+- ✅ Ready for publication to Agent Skills Registry
 
 ## Contributing
 

@@ -1,12 +1,12 @@
 ---
 name: vue-project-scaffolder
-description: >
-  Automatically scaffold and validate a production-ready Vue 3 project with Vite, Tailwind CSS v4, and shadcn/vue integration.
+description: Scaffold a production-ready Vue 3 + Vite + Tailwind v4 project with full automation and validation. Creates properly configured projects with all dependencies validated and ready to run.
 license: Apache-2.0
+compatibility: >
+  Node.js 18+ required. Works on macOS, Linux, Windows. Uses only built-in Node.js modules (no external dependencies).
 metadata:
   author: EfeDeveloper
-  version: "2.0"
-  compliance: "Agent Skills v2"
+  version: "2.1"
 ---
 
 # Vue Project Scaffolder
@@ -25,15 +25,14 @@ When user says things like:
 
 ## How It Works
 
-This skill **automatically creates and configures** a production-ready Vue 3 project:
+This skill **automatically creates and fully configures** a production-ready Vue 3 project in 4 steps:
 
-1. **Creates Vite project** — Runs `{pm} create vite@latest {name} --template vue-ts`
-2. **Installs dependencies** — Adds Tailwind v4, utilities, and all required packages
-3. **Configures files** — Updates vite.config.ts, tsconfig.json, style.css, App.vue, etc.
-4. **Validates dependencies** — Checks package.json has all minimum required packages
-5. **Does NOT run dev server or init shadcn** — Project is fully configured, user decides next steps
+1. **Creates Vite project** with TypeScript template
+2. **Installs dependencies** — Tailwind v4, utilities, and all required packages
+3. **Runs setup script** — `node scripts/setup.js` handles file copying, validation, and auto-upgrades
+4. **Reports success** — Project is ready for development
 
-**Result**: A fully set up, ready-to-develop Vue 3 + Tailwind v4 project. User can immediately run `{pm} run dev` or optionally add shadcn components.
+**Result**: A fully configured, ready-to-run Vue 3 + Tailwind v4 project. No manual configuration needed.
 
 ## Critical Patterns
 
@@ -124,19 +123,29 @@ Adapt ALL commands to the chosen package manager. Use the **Package Manager Equi
 3. **EXECUTE:** Navigate: `cd {project-name}`
 4. **EXECUTE:** Install dependencies: `{pm} add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next`
 5. **EXECUTE:** Install dev dependencies: `{pm} add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vue-tsc`
-6. **EXECUTE:** Copy and update files:
-   - Copy [`assets/vite.config.ts`](assets/vite.config.ts) → `vite.config.ts`
-   - Copy [`assets/tsconfig.json`](assets/tsconfig.json) → `tsconfig.json`
-   - Copy [`assets/tsconfig.app.json`](assets/tsconfig.app.json) → `tsconfig.app.json`
-   - Copy [`assets/tsconfig.node.json`](assets/tsconfig.node.json) → `tsconfig.node.json` (CRITICAL for vite.config.ts types)
-   - Copy [`assets/style.css`](assets/style.css) → `src/style.css`
-   - Copy [`assets/App.vue`](assets/App.vue) → `src/App.vue`
-   - Copy [`assets/README.md`](assets/README.md) → `README.md` (replace Vite's default)
-7. **VALIDATE:** Check `package.json` has all minimum required dependencies (see Critical Patterns)
+6. **EXECUTE:** Run the automated setup script:
+   ```bash
+   node scripts/setup.js {project-dir} {package-manager}
+   ```
+   
+   This script automatically:
+   - ✅ Copies config files from `assets/`
+   - ✅ Removes incompatible files (Tailwind v4)
+   - ✅ Validates all 15 dependencies
+   - ✅ Auto-upgrades outdated packages
+   - ✅ Verifies final configuration
+
+7. **VERIFY:** Confirm setup completed successfully by checking:
+   - Script output shows all ✅ checkmarks
+   - No ❌ errors in validation
+   - All 6+ files copied successfully
+
 8. **DO NOT EXECUTE:** 
    - Do NOT run `{pm} run dev` — user will do this themselves
    - Do NOT run `shadcn-vue init` — if user wants it, they'll add components later
-9. **Report:** Show user where project is and how to run it (and optional shadcn next step)
+   - Do NOT make manual edits to config files — the script handles everything
+
+9. **Report:** Show user the success summary and next steps
 
 **For detailed explanations**, see [`references/implementation-guide.md`](references/implementation-guide.md)
 
@@ -244,76 +253,33 @@ cd {project-name}
 {pm} add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc
 ```
 
-### 3. Update Configuration Files (Copy from assets)
+### 3. Automated Setup
+Run the setup script (from skill root directory):
 ```bash
-# Copy these files from the skill assets:
-# assets/vite.config.ts        → {project-name}/vite.config.ts
-# assets/tsconfig.json         → {project-name}/tsconfig.json
-# assets/tsconfig.app.json     → {project-name}/tsconfig.app.json
-# assets/tsconfig.node.json    → {project-name}/tsconfig.node.json (CRITICAL - fixes vite.config.ts type errors)
-# assets/style.css             → {project-name}/src/style.css
-# assets/App.vue               → {project-name}/src/App.vue
-# assets/README.md             → {project-name}/README.md (replaces Vite default)
+node scripts/setup.js {full-path-to-project} {package-manager}
 ```
 
-### 4. Validate Dependencies
-```bash
-# Read package.json and verify all minimum dependencies are present
-# See "Success Criteria" section above for required versions
-```
+For detailed script documentation, see [references/SCRIPTS.md](references/SCRIPTS.md).
 
-### 5. STOP HERE - Do NOT Run Dev Server
-**DO NOT execute `npm run dev` or equivalent**
+### 4. STOP HERE - Do NOT Run Dev Server
+**DO NOT execute `{pm} run dev` or equivalent**
 
-The user will run it themselves:
+The user will run it themselves after setup completes:
 ```bash
 cd {project-name}
 {pm} run dev
 ```
 
-### Examples by Package Manager
+### Complete Workflow by Package Manager
 
-**Using pnpm:**
+**Example with bun:**
 ```bash
-pnpm create vite@latest my-app --template vue-ts
-cd my-app
-pnpm add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
-pnpm add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc
-# Copy config files from assets
-pnpm run dev
-```
-
-**Using npm:**
-```bash
-npm create vite@latest my-app -- --template vue-ts
-cd my-app
-npm install tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
-npm install -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc
-# Copy config files from assets
-npm run dev
-```
-
-**Using yarn:**
-```bash
-yarn create vite my-app --template vue-ts
-cd my-app
-yarn add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
-yarn add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc
-# Copy config files from assets
-yarn dev
-```
-
-**Using bun:**
-```bash
-bun create vite my-app --template vue-ts
-cd my-app
+bun create vite my-app --template vue-ts && cd my-app
 bun add tailwindcss @tailwindcss/vite clsx class-variance-authority tailwind-merge lucide-vue-next
 bun add -D @types/node tw-animate-css typescript vite @vitejs/plugin-vue @vue/tsconfig vite-plugin-vue-devtools vue-tsc
-# Copy config files from assets
+node /path/to/skill/scripts/setup.js $(pwd) bun
 bun run dev
 ```
-
-**Note:** The create project step is interactive — follow the prompts in the console.
 
 ---
 
@@ -374,8 +340,8 @@ Package Manager: {pm}
 - **[assets/components.json](assets/components.json)** — shadcn configuration file
 - **[assets/README.md](assets/README.md)** — Project README template
 
-### Detailed Guide
-- **[references/implementation-guide.md](references/implementation-guide.md)** — Complete step-by-step guide with explanations, troubleshooting, and next steps
+### Scripts Documentation
+- **[references/SCRIPTS.md](references/SCRIPTS.md)** — Complete automation scripts guide, troubleshooting, and technical details
 
 ### Official Documentation
 - [shadcn/vue Installation](https://www.shadcn-vue.com/docs/installation/vite)
